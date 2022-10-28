@@ -4,12 +4,15 @@
  */
 package Login;
 
+import Model.User;
 import dao.Conexao;
+import dao.UserDao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,13 +36,19 @@ public class TelaDeCadastro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        txtUsuarioCd = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtSenhaCd = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtUsuarioCd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioCdActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Novo Login ");
 
@@ -63,8 +72,8 @@ public class TelaDeCadastro extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                .addComponent(jTextField1)
+                                .addComponent(txtSenhaCd, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                .addComponent(txtUsuarioCd)
                                 .addComponent(jLabel1))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(121, 121, 121)
@@ -77,11 +86,11 @@ public class TelaDeCadastro extends javax.swing.JFrame {
                 .addGap(103, 103, 103)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsuarioCd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSenhaCd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap(67, Short.MAX_VALUE))
@@ -92,21 +101,24 @@ public class TelaDeCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String UsuarioCd = txtUsuarioCd.getText();
+        String SenhaCd = txtSenhaCd.getText();
+        
+        User usuario = new User(UsuarioCd,SenhaCd);
         try {
-            // TODO add your handling code here:
-
             Connection conexao = new Conexao().getConnection();
-            String sql = "insert into usuario(\"User\",\"Senha\") values('teste','senha123');";
-            PreparedStatement  statement = conexao.prepareStatement(sql);
-            statement.execute();
-            conexao.close();
-            
-            
+            UserDao usuariodao = new UserDao(conexao);
+            usuariodao.Insert(usuario);
+            JOptionPane.showMessageDialog(null, " Usuario cadastrado com sucesso! ");
             
         } catch (SQLException ex) {
             Logger.getLogger(TelaDeCadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtUsuarioCdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioCdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsuarioCdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,7 +159,7 @@ public class TelaDeCadastro extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txtSenhaCd;
+    private javax.swing.JTextField txtUsuarioCd;
     // End of variables declaration//GEN-END:variables
 }
